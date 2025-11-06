@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Your Own AI Call Center in 15 Minutes | Asterisk AI Voice Agent</title>
+    <meta name="description" content="Step-by-step tutorial: Deploy a production-ready AI voice agent with Asterisk, Python, and Docker in just 15 minutes.">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🤖 Asterisk AI Voice Agent</h1>
+            <p>Open-Source, Real-Time AI Voice Agents on Asterisk</p>
+            <nav>
+                <a href="../index.html">Blog Home</a>
+                <a href="https://github.com/hkjarral/Asterisk-AI-Voice-Agent">GitHub</a>
+                <a href="https://discord.gg/HvRq9AFr">Discord</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <article>
+            <h1>Building Your Own AI Call Center in 15 Minutes with Asterisk and Python</h1>
+            <div class="post-meta">Published on November 6, 2025 | 8 min read</div>
+            
+            <p>Imagine having a fully functional AI-powered call center that can handle customer inquiries, qualify leads, and book appointments—all running on your own infrastructure. Sounds like a months-long project, right? Wrong. With the Asterisk AI Voice Agent, you can deploy a production-ready system in under 15 minutes.</p>
+
+            <p>In this tutorial, I'll walk you through the entire process, from zero to a working AI voice agent that can answer calls and hold intelligent conversations.</p>
+
+            <h2>What You'll Build</h2>
+
+            <p>By the end of this tutorial, you'll have:</p>
+
+            <ul>
+                <li>A fully functional Asterisk PBX integrated with AI services</li>
+                <li>Real-time speech-to-text (STT) and text-to-speech (TTS) capabilities</li>
+                <li>An intelligent conversational agent powered by modern LLMs</li>
+                <li>A Docker-based deployment that's easy to manage and scale</li>
+            </ul>
+
+            <h2>Prerequisites</h2>
+
+            <p>Before we begin, make sure you have:</p>
+
+            <ul>
+                <li><strong>Docker and Docker Compose</strong> installed on your system</li>
+                <li><strong>An Asterisk server</strong> (version 16 or later) with ARI enabled</li>
+                <li><strong>API keys</strong> for your chosen AI services (OpenAI, Deepgram, or ElevenLabs)</li>
+                <li><strong>Basic command-line knowledge</strong></li>
+            </ul>
+
+            <blockquote>
+                <strong>Pro Tip:</strong> If you don't have an Asterisk server yet, you can use the included Docker Compose setup that bundles everything together.
+            </blockquote>
+
+            <h2>Step 1: Clone the Repository</h2>
+
+            <p>First, grab the code from GitHub:</p>
+
+            <pre><code>git clone https://github.com/hkjarral/Asterisk-AI-Voice-Agent.git
+cd Asterisk-AI-Voice-Agent</code></pre>
+
+            <h2>Step 2: Configure Your Environment</h2>
+
+            <p>The project uses environment variables for configuration. Copy the example file and edit it with your API keys:</p>
+
+            <pre><code>cp .env.example .env
+nano .env</code></pre>
+
+            <p>Here's what a minimal configuration looks like:</p>
+
+            <pre><code># Asterisk Configuration
+ASTERISK_HOST=localhost
+ASTERISK_ARI_PORT=8088
+ASTERISK_ARI_USER=asterisk
+ASTERISK_ARI_PASSWORD=asterisk
+
+# AI Service Configuration
+STT_PROVIDER=deepgram
+DEEPGRAM_API_KEY=your_deepgram_key_here
+
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_openai_key_here
+
+TTS_PROVIDER=elevenlabs
+ELEVENLABS_API_KEY=your_elevenlabs_key_here</code></pre>
+
+            <blockquote>
+                <strong>Privacy Note:</strong> You can also use local models (Vosk for STT, Llama for LLM, Piper for TTS) if you prefer to keep everything on-premise. Just change the provider settings accordingly.
+            </blockquote>
+
+            <h2>Step 3: Launch with Docker Compose</h2>
+
+            <p>This is where the magic happens. With a single command, Docker Compose will:</p>
+
+            <ul>
+                <li>Pull the necessary images</li>
+                <li>Set up the Python application</li>
+                <li>Connect to your Asterisk server</li>
+                <li>Start the AI voice agent</li>
+            </ul>
+
+            <pre><code>docker-compose up -d</code></pre>
+
+            <p>Watch the logs to ensure everything starts correctly:</p>
+
+            <pre><code>docker-compose logs -f</code></pre>
+
+            <p>You should see output indicating that the agent has successfully connected to Asterisk's ARI interface.</p>
+
+            <h2>Step 4: Configure Asterisk Dialplan</h2>
+
+            <p>Now we need to tell Asterisk to route calls to our AI agent. Add this to your <code>extensions.conf</code>:</p>
+
+            <pre><code>[from-internal]
+exten => 100,1,NoOp(AI Voice Agent)
+ same => n,Stasis(ai-voice-agent)
+ same => n,Hangup()</code></pre>
+
+            <p>Reload the Asterisk dialplan:</p>
+
+            <pre><code>asterisk -rx "dialplan reload"</code></pre>
+
+            <h2>Step 5: Make Your First Call</h2>
+
+            <p>That's it! You're ready to test. From any phone connected to your Asterisk server, dial extension <strong>100</strong>. You should hear the AI agent greet you and start a conversation.</p>
+
+            <p>Try asking it questions like:</p>
+
+            <ul>
+                <li>"What services do you offer?"</li>
+                <li>"Can you tell me your business hours?"</li>
+                <li>"I'd like to schedule an appointment."</li>
+            </ul>
+
+            <p>The agent will respond in real-time, using the LLM to generate contextually appropriate answers.</p>
+
+            <h2>Customizing Your Agent</h2>
+
+            <p>The default agent is designed to be a helpful assistant, but you can easily customize its behavior by editing the system prompt in <code>src/config.py</code>:</p>
+
+            <pre><code>SYSTEM_PROMPT = """
+You are a friendly customer service agent for Acme Corp.
+Your role is to answer questions about our products and services.
+Always be polite, concise, and helpful.
+If you don't know something, admit it and offer to transfer to a human.
+"""</code></pre>
+
+            <p>Restart the container to apply changes:</p>
+
+            <pre><code>docker-compose restart</code></pre>
+
+            <h2>Monitoring and Debugging</h2>
+
+            <p>The agent logs all conversations and system events. To view them:</p>
+
+            <pre><code>docker-compose logs -f ai-voice-agent</code></pre>
+
+            <p>For more detailed debugging, you can enable verbose logging by setting <code>LOG_LEVEL=DEBUG</code> in your <code>.env</code> file.</p>
+
+            <h2>What's Happening Under the Hood?</h2>
+
+            <p>When a call comes in, here's the flow:</p>
+
+            <ol>
+                <li><strong>Asterisk receives the call</strong> and triggers the Stasis application</li>
+                <li><strong>The Python agent connects</strong> via ARI and creates an ExternalMedia channel</li>
+                <li><strong>Audio streams</strong> in real-time between Asterisk and the agent</li>
+                <li><strong>Speech-to-text</strong> converts the caller's voice to text</li>
+                <li><strong>The LLM generates</strong> an intelligent response</li>
+                <li><strong>Text-to-speech</strong> converts the response back to audio</li>
+                <li><strong>The audio is played</strong> back to the caller through Asterisk</li>
+            </ol>
+
+            <p>All of this happens in near real-time, with typical latencies under 500ms for cloud services and under 2 seconds for local models.</p>
+
+            <h2>Next Steps</h2>
+
+            <p>Now that you have a working AI call center, here are some ideas for extending it:</p>
+
+            <ul>
+                <li><strong>Integrate with your CRM:</strong> Have the agent look up customer information during calls</li>
+                <li><strong>Add call routing:</strong> Use the LLM to determine intent and transfer to the right department</li>
+                <li><strong>Implement appointment booking:</strong> Connect to your calendar API</li>
+                <li><strong>Enable outbound calling:</strong> Use the agent for proactive customer outreach</li>
+                <li><strong>Switch to local models:</strong> For complete privacy and cost control</li>
+            </ul>
+
+            <h2>Troubleshooting Common Issues</h2>
+
+            <h3>Agent won't connect to Asterisk</h3>
+            <p>Check that ARI is enabled in <code>ari.conf</code> and that the credentials in your <code>.env</code> file match.</p>
+
+            <h3>No audio during calls</h3>
+            <p>Ensure that the <code>ExternalMedia</code> application is properly configured and that your firewall allows RTP traffic.</p>
+
+            <h3>High latency</h3>
+            <p>If you're using cloud services, check your internet connection. For local models, ensure you have adequate CPU/GPU resources.</p>
+
+            <h2>Conclusion</h2>
+
+            <p>In just 15 minutes, you've deployed a fully functional AI-powered call center. This is the power of open-source software combined with modern AI—what used to require enterprise budgets and months of development can now be done in minutes.</p>
+
+            <p>The Asterisk AI Voice Agent is production-ready, highly customizable, and completely under your control. Whether you're building an internal help desk, a customer service line, or a lead qualification system, you now have the foundation to do it.</p>
+
+            <p><strong>Ready to dive deeper?</strong> Check out our other articles on customizing the agent's personality, integrating with external systems, and optimizing for production deployments.</p>
+
+            <hr>
+
+            <p><em>Questions or feedback? Join our <a href="https://discord.gg/HvRq9AFr">Discord community</a> or open an issue on <a href="https://github.com/hkjarral/Asterisk-AI-Voice-Agent">GitHub</a>.</em></p>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Asterisk AI Voice Agent | Open Source | MIT License</p>
+        </div>
+    </footer>
+</body>
+</html>
