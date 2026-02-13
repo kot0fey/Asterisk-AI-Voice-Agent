@@ -246,8 +246,8 @@ FASTER_WHISPER_STT_MODELS = [
      "description": "High accuracy, needs GPU for real-time.",
      "note": "Requires INCLUDE_FASTER_WHISPER=true in Docker build"},
     {"id": "faster_whisper_large_v3", "name": "Whisper Large v3 (1.5B)", "language": "multi", "region": "global", "backend": "faster_whisper",
-     "size_mb": 3000, "size_display": "3 GB", "model_path": "faster-whisper-large-v3",
-     "download_url": None, "auto_download": True,
+     "size_mb": 3000, "size_display": "3 GB", "model_path": "faster-whisper-large-v3-russian",
+     "download_url": None, "auto_download": False,
      "description": "Best accuracy, requires GPU for acceptable speed.",
      "note": "Requires INCLUDE_FASTER_WHISPER=true in Docker build"},
 ]
