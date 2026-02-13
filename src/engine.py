@@ -9033,6 +9033,13 @@ class Engine:
                                 continue
                             chunk = bytes(local_buf)
                             local_buf.clear()
+                            self.audio_capture.append_encoded(
+                                call_id,
+                                "caller_to_pipeline",
+                                chunk,
+                                "pcm16",
+                                8000,
+                            )
                             try:
                                 await pipeline.stt_adapter.send_audio(
                                     call_id,
