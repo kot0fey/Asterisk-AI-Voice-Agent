@@ -83,7 +83,9 @@ class ElevenLabsAgentProvider(AIProviderInterface, ProviderCapabilitiesMixin):
         self._turn_start_time: Optional[float] = None
         self._turn_first_audio_received: bool = False
         self._session_store = None  # Set via engine for latency tracking
-        
+        logger.info("CUSTOM ELEVENLABS AGENT: config: ",
+                    config)
+
         logger.info(f"[elevenlabs] Provider initialized with agent_id={config.agent_id[:8]}...")
     
     @property
@@ -303,6 +305,11 @@ class ElevenLabsAgentProvider(AIProviderInterface, ProviderCapabilitiesMixin):
         Audio is expected to be from telephony (μ-law 8kHz) and will be
         converted to PCM16 16kHz for ElevenLabs.
         """
+
+        logger.info("CUSTOM SEND AUDIO",
+                    audio_chunk=audio_chunk,
+                    sample_rate=sample_rate,
+                    encoding=encoding)
         if not self._ws or not self._connected or self._closing:
             logger.debug(f"[elevenlabs] [{self._call_id}] send_audio skipped: ws={self._ws is not None}, connected={self._connected}, closing={self._closing}")
             return
