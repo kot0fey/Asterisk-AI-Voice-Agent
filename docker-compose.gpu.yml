@@ -34,6 +34,8 @@ services:
     image: asterisk-ai-voice-agent-local-ai-server-gpu:latest
     build:
       dockerfile: Dockerfile.gpu
+    environment:
+      - INCLUDE_FASTER_WHISPER=true
     deploy:
       resources:
         reservations:

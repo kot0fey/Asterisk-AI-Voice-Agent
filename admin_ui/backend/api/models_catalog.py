@@ -246,7 +246,7 @@ FASTER_WHISPER_STT_MODELS = [
      "description": "High accuracy, needs GPU for real-time.",
      "note": "Requires INCLUDE_FASTER_WHISPER=true in Docker build"},
     {"id": "faster_whisper_large_v3", "name": "Whisper Large v3 (1.5B)", "language": "multi", "region": "global", "backend": "faster_whisper",
-     "size_mb": 3000, "size_display": "3 GB", "model_path": "large-v3",
+     "size_mb": 3000, "size_display": "3 GB", "model_path": "faster-whisper-large-v3",
      "download_url": None, "auto_download": True,
      "description": "Best accuracy, requires GPU for acceptable speed.",
      "note": "Requires INCLUDE_FASTER_WHISPER=true in Docker build"},
@@ -271,7 +271,7 @@ PIPER_TTS_MODELS = [
      "model_path": "en_GB-alba-medium.onnx",
      "download_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_GB/alba/medium/en_GB-alba-medium.onnx",
      "config_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_GB/alba/medium/en_GB-alba-medium.onnx.json"},
-    
+
     # === European Languages ===
     {"id": "piper_de_thorsten_medium", "name": "Thorsten (de-DE, Male)", "language": "de-DE", "region": "europe", "backend": "piper",
      "gender": "male", "quality": "medium", "size_mb": 100, "size_display": "100 MB",
@@ -373,7 +373,7 @@ PIPER_TTS_MODELS = [
      "model_path": "sr_RS-serbski_institut-medium.onnx",
      "download_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/sr/sr_RS/serbski_institut/medium/sr_RS-serbski_institut-medium.onnx",
      "config_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/sr/sr_RS/serbski_institut/medium/sr_RS-serbski_institut-medium.onnx.json"},
-    
+
     # === Asian Languages ===
     {"id": "piper_zh_huayan_medium", "name": "Huayan (zh-CN, Female)", "language": "zh-CN", "region": "asia", "backend": "piper",
      "gender": "female", "quality": "medium", "size_mb": 100, "size_display": "100 MB",
@@ -395,14 +395,14 @@ PIPER_TTS_MODELS = [
      "model_path": "kk_KZ-iseke-x_low.onnx",
      "download_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/kk/kk_KZ/iseke/x_low/kk_KZ-iseke-x_low.onnx",
      "config_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/kk/kk_KZ/iseke/x_low/kk_KZ-iseke-x_low.onnx.json"},
-    
+
     # === Middle East ===
     {"id": "piper_ar_kareem_medium", "name": "Kareem (ar, Male)", "language": "ar", "region": "middle_east", "backend": "piper",
      "gender": "male", "quality": "medium", "size_mb": 100, "size_display": "100 MB",
      "model_path": "ar_JO-kareem-medium.onnx",
      "download_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/ar/ar_JO/kareem/medium/ar_JO-kareem-medium.onnx",
      "config_url": "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/ar/ar_JO/kareem/medium/ar_JO-kareem-medium.onnx.json"},
-    
+
     # === Africa ===
     {"id": "piper_sw_lanfrica_medium", "name": "Lanfrica (sw-CD, Male)", "language": "sw", "region": "africa", "backend": "piper",
      "gender": "male", "quality": "medium", "size_mb": 100, "size_display": "100 MB",
@@ -472,7 +472,7 @@ LLM_MODELS = [
      "description": "Good quality, optimized for 4K context", "recommended": True,
      "download_url": "https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf/resolve/main/Phi-3-mini-4k-instruct-q4.gguf",
      "model_path": "phi-3-mini-4k-instruct.Q4_K_M.gguf", "recommended_ram_gb": 8},
-    
+
     # === Mid-Range Models (8-16 GB RAM) ===
     {"id": "qwen25_3b", "name": "Qwen 2.5-3B Instruct", "size_mb": 2100, "size_display": "2.1 GB",
      "description": "Excellent instruction following, multilingual",
@@ -490,7 +490,7 @@ LLM_MODELS = [
      "description": "Superior instruction following, tool calling support",
      "download_url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF/resolve/main/qwen2.5-7b-instruct-q4_k_m.gguf",
      "model_path": "qwen2.5-7b-instruct-q4_k_m.gguf", "recommended_ram_gb": 12},
-    
+
     # === High-Performance Models (16-24 GB RAM) ===
     {"id": "llama31_8b", "name": "Llama 3.1-8B Instruct", "size_mb": 4700, "size_display": "4.7 GB",
      "description": "Strong reasoning and dialogue, 128K context",
@@ -508,7 +508,7 @@ LLM_MODELS = [
      "description": "Excellent for complex reasoning and coding",
      "download_url": "https://huggingface.co/Qwen/Qwen2.5-14B-Instruct-GGUF/resolve/main/qwen2.5-14b-instruct-q4_k_m.gguf",
      "model_path": "qwen2.5-14b-instruct-q4_k_m.gguf", "recommended_ram_gb": 20},
-    
+
     # === Cloud Options ===
     {"id": "openai_cloud", "name": "OpenAI Cloud (GPT-4)", "size_mb": 0, "size_display": "0 (Cloud)",
      "description": "Best quality, requires API key",
@@ -532,36 +532,36 @@ def get_models_by_language(language_code: str):
     """Get all models available for a specific language."""
     catalog = get_full_catalog()
     result = {"stt": [], "tts": []}
-    
+
     for stt in catalog["stt"]:
         if stt.get("language") == language_code or stt.get("language") == "multi":
             result["stt"].append(stt)
-    
+
     for tts in catalog["tts"]:
         if tts.get("language") == language_code or tts.get("language") == "multi":
             result["tts"].append(tts)
-    
+
     return result
 
 def get_available_languages():
     """Get list of all available languages with their support status."""
     catalog = get_full_catalog()
     languages = {}
-    
+
     for stt in catalog["stt"]:
         lang = stt.get("language")
         if lang and lang != "multi":
             if lang not in languages:
                 languages[lang] = {"stt": [], "tts": [], "region": stt.get("region", "other")}
             languages[lang]["stt"].append(stt["id"])
-    
+
     for tts in catalog["tts"]:
         lang = tts.get("language")
         if lang and lang != "multi":
             if lang not in languages:
                 languages[lang] = {"stt": [], "tts": [], "region": tts.get("region", "other")}
             languages[lang]["tts"].append(tts["id"])
-    
+
     return languages
 
 # Language display names for UI
