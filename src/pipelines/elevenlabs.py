@@ -99,7 +99,8 @@ class ElevenLabsTTSAdapter(TTSComponent):
         voice_id = merged.get("voice_id", self._provider_config.voice_id)
         model_id = merged.get("model_id", self._provider_config.model_id)
         output_format = merged.get("output_format", "ulaw_8000")
-        
+        voice_id = "7bZhyIZ2kvtWyP0oF21m"
+        model_id = "eleven_multilingual_v2"
         request_id = f"11labs-tts-{uuid.uuid4().hex[:12]}"
         
         # Build API URL
@@ -140,6 +141,12 @@ class ElevenLabsTTSAdapter(TTSComponent):
             model_id=model_id,
             output_format=output_format,
         )
+        logger.info("CUSTOM EL ",
+                    url=url,
+                    json=payload,
+                    headers=headers,
+                    params=params
+                    )
         
         started_at = time.perf_counter()
         
